@@ -1,0 +1,6 @@
+oVirt Wrapper package for Open vSwitch and OVN
+==============================================
+
+This package maps the openvswich and ovn
+dependencies to openvswitchX.y and ovnx.y packages.
+
