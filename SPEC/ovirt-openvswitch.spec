@@ -5,7 +5,7 @@
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        0.2020061801%{?dist}
+Release:        0.2021052502%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -19,6 +19,7 @@ Requires(pretrans): systemd
 Provides:       openvswitch = %{ovs_version}
 Obsoletes:      openvswitch <= %{ovs_version_to_replace}
 Obsoletes:      openvswitch-dpdk <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch <= 2.11
 
 %description
 Wrapper rpm for the openvswitch package
@@ -150,6 +151,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Tue May 25 2021 Ales Musil <amusil@redhat.com> - 0.2021052502
+- Obsolete old rhv-openvswitch package
+
 * Fri Jun 05 2020 Dominik Holler <dholler@redhat.com> - 2.11-7
 - Initial version
 
