@@ -1,5 +1,6 @@
-%define ovs_version 2.11
-%define ovs_version_to_replace 2.11.1
+%define ovs_version 2.15
+%define ovn_version 2021
+%define version_to_replace 2.11
 
 %global py_openvswitch python3-openvswitch
 
@@ -17,8 +18,7 @@ Requires:       openvswitch%{ovs_version}
 Requires(pretrans): bash
 Requires(pretrans): systemd
 Provides:       openvswitch = %{ovs_version}
-Obsoletes:      openvswitch <= %{ovs_version_to_replace}
-Obsoletes:      openvswitch-dpdk <= %{ovs_version_to_replace}
+Obsoletes:      openvswitch%{version_to_replace}
 Obsoletes:      rhv-openvswitch
 
 %description
@@ -29,7 +29,7 @@ Summary:        Wrapper for python-openvswitch rpm
 License:        Public Domain
 Requires:       %{py_openvswitch}%{ovs_version}
 Provides:       %{py_openvswitch} = %{ovs_version}
-Obsoletes:      %{py_openvswitch} <= %{ovs_version_to_replace}
+Obsoletes:      %{py_openvswitch}%{version_to_replace}
 Obsoletes:      rhv-python-openvswitch
 
 %description -n ovirt-python-openvswitch
@@ -40,7 +40,7 @@ Summary:        Wrapper for openvswitch-devel rpm
 License:        Public Domain
 Requires:       openvswitch%{ovs_version}-devel
 Provides:       openvswitch-devel = %{ovs_version}
-Obsoletes:      openvswitch-devel <= %{ovs_version_to_replace}
+Obsoletes:      openvswitch%{version_to_replace}-devel
 Obsoletes:      rhv-openvswitch-devel
 
 %description devel
@@ -49,10 +49,10 @@ Wrapper rpm for the base openvswitch-devel package
 %package        ovn
 Summary:        Wrapper for ovn rpm
 License:        Public Domain
-Requires:       ovn%{ovs_version}
-Provides:       openvswitch-ovn = %{ovs_version}
-Provides:       ovn = %{ovs_version}
-Obsoletes:      ovn <= %{ovs_version_to_replace}
+Requires:       ovn-%{ovn_version}
+Provides:       openvswitch-ovn = %{ovn_version}
+Provides:       ovn = %{ovn_version}
+Obsoletes:      ovn%{version_to_replace}
 Obsoletes:      rhv-openvswitch-ovn
 
 %description ovn
@@ -61,11 +61,10 @@ Wrapper rpm for the base openvswitch-ovn-central package
 %package        ovn-central
 Summary:        Wrapper for openvswitch-ovn-central rpm
 License:        Public Domain
-Requires:       ovn%{ovs_version}-central
+Requires:       ovn-%{ovn_version}-central
 Requires:       ovirt-openvswitch-ovn
-Provides:       openvswitch-ovn-central = %{ovs_version}
-Obsoletes:      openvswitch-ovn-central <= %{ovs_version_to_replace}
-Obsoletes:      ovn-central <= %{ovs_version_to_replace}
+Provides:       openvswitch-ovn-central = %{ovn_version}
+Obsoletes:      ovn%{version_to_replace}-central
 Obsoletes:      rhv-openvswitch-ovn-central
 
 %description ovn-central
@@ -74,11 +73,10 @@ Wrapper rpm for the base openvswitch-ovn-central package
 %package        ovn-host
 Summary:        Wrapper for openvswitch-ovn-host rpm
 License:        Public Domain
-Requires:       ovn%{ovs_version}-host
+Requires:       ovn-%{ovn_version}-host
 Requires:       ovirt-openvswitch-ovn
-Provides:       openvswitch-ovn-host = %{ovs_version}
-Obsoletes:      openvswitch-ovn-host < %{ovs_version_to_replace}
-Obsoletes:      ovn-host <= %{ovs_version_to_replace}
+Provides:       openvswitch-ovn-host = %{ovn_version}
+Obsoletes:      ovn%{version_to_replace}-host
 Obsoletes:      rhv-openvswitch-ovn-host
 
 %description    ovn-host
@@ -87,11 +85,10 @@ Wrapper rpm for the base openvswitch-ovn-host package
 %package        ovn-vtep
 Summary:        Wrapper for openvswitch-ovn-vtep rpm
 License:        Public Domain
-Requires:       ovn%{ovs_version}-vtep
+Requires:       ovn-%{ovn_version}-vtep
 Requires:       ovirt-openvswitch-ovn
-Provides:       openvswitch-ovn-vtep = %{ovs_version}
-Obsoletes:      openvswitch-ovn-vtep < %{ovs_version_to_replace}
-Obsoletes:      ovn-vtep <= %{ovs_version_to_replace}
+Provides:       openvswitch-ovn-vtep = %{ovn_version}
+Obsoletes:      ovn%{version_to_replace}-vtep
 Obsoletes:      rhv-openvswitch-ovn-vtep
 
 %description    ovn-vtep
@@ -100,11 +97,10 @@ Wrapper rpm for the base openvswitch-ovn-vtep package
 %package        ovn-common
 Summary:        Wrapper for openvswitch-ovn-common rpm
 License:        Public Domain
-Requires:       ovn%{ovs_version}
+Requires:       ovn-%{ovn_version}
 Requires:       ovirt-openvswitch-ovn
-Provides:       openvswitch-ovn-common = %{ovs_version}
-Obsoletes:      openvswitch-ovn-common < %{ovs_version_to_replace}
-Obsoletes:      ovn-common <= %{ovs_version_to_replace}
+Provides:       openvswitch-ovn-common = %{ovn_version}
+Obsoletes:      ovn%{version_to_replace}
 Obsoletes:      rhv-openvswitch-ovn-common
 
 %description    ovn-common
@@ -142,6 +138,21 @@ for service in openvswitch ovn-northd ovirt-provider-ovn ovn-controller; do
 done
 
 %posttrans
+pre_upgrade_log_dir=/var/log/openvswitch
+pre_upgrade_lib_dir=/var/lib/openvswitch
+post_upgrade_log_dir=/var/log/ovn
+post_upgrade_lib_dir=/var/lib/ovn
+mkdir -p "$post_upgrade_log_dir" "$post_upgrade_lib_dir"
+for db in ovnnb_db.db ovnsb_db.db; do
+    if [ -e "$pre_upgrade_lib_dir/$db" ]; then
+        mv "$pre_upgrade_lib_dir/$db" "$post_upgrade_lib_dir/$db"
+    fi
+done
+for log in ovsdb-server-nb.log ovsdb-server-sb.log ovn-northd.log; do
+    if [ -e "$pre_upgrade_log_dir/$log" ]; then
+        mv "$pre_upgrade_log_dir/$log" "$post_upgrade_log_dir/$log"
+    fi
+done
 preenabled_dir=/var/run/ovirt-openvswitch/enabled
 preactive_dir=/var/run/ovirt-openvswitch/active
 if [ -d "$preenabled_dir" ]; then
@@ -158,6 +169,10 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Wed Aug 25 2021 Ales Musil <amusil@redhat.com> - 2.15-1
+- Update OvS version to 2.15
+- Update OVN version to 2021
+
 * Thu Jun 10 2021 Ales Musil <amusil@redhat.com> - 2.11-1
 - Use simpler version numbers
 
