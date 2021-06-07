@@ -5,7 +5,7 @@
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        0.2021052502%{?dist}
+Release:        0.2021060703%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -19,7 +19,7 @@ Requires(pretrans): systemd
 Provides:       openvswitch = %{ovs_version}
 Obsoletes:      openvswitch <= %{ovs_version_to_replace}
 Obsoletes:      openvswitch-dpdk <= %{ovs_version_to_replace}
-Obsoletes:      rhv-openvswitch <= 2.11
+Obsoletes:      rhv-openvswitch
 
 %description
 Wrapper rpm for the openvswitch package
@@ -30,6 +30,7 @@ License:        Public Domain
 Requires:       %{py_openvswitch}%{ovs_version}
 Provides:       %{py_openvswitch} = %{ovs_version}
 Obsoletes:      %{py_openvswitch} <= %{ovs_version_to_replace}
+Obsoletes:      rhv-python-openvswitch
 
 %description -n ovirt-python-openvswitch
 Wrapper rpm for the base python-openvswitch package
@@ -40,6 +41,7 @@ License:        Public Domain
 Requires:       openvswitch%{ovs_version}-devel
 Provides:       openvswitch-devel = %{ovs_version}
 Obsoletes:      openvswitch-devel <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-devel
 
 %description devel
 Wrapper rpm for the base openvswitch-devel package
@@ -51,6 +53,7 @@ Requires:       ovn%{ovs_version}
 Provides:       openvswitch-ovn = %{ovs_version}
 Provides:       ovn = %{ovs_version}
 Obsoletes:      ovn <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-ovn
 
 %description ovn
 Wrapper rpm for the base openvswitch-ovn-central package
@@ -63,6 +66,7 @@ Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-central = %{ovs_version}
 Obsoletes:      openvswitch-ovn-central <= %{ovs_version_to_replace}
 Obsoletes:      ovn-central <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-ovn-central
 
 %description ovn-central
 Wrapper rpm for the base openvswitch-ovn-central package
@@ -75,6 +79,7 @@ Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-host = %{ovs_version}
 Obsoletes:      openvswitch-ovn-host < %{ovs_version_to_replace}
 Obsoletes:      ovn-host <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-ovn-host
 
 %description    ovn-host
 Wrapper rpm for the base openvswitch-ovn-host package
@@ -87,6 +92,7 @@ Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-vtep = %{ovs_version}
 Obsoletes:      openvswitch-ovn-vtep < %{ovs_version_to_replace}
 Obsoletes:      ovn-vtep <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-ovn-vtep
 
 %description    ovn-vtep
 Wrapper rpm for the base openvswitch-ovn-vtep package
@@ -99,6 +105,7 @@ Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-common = %{ovs_version}
 Obsoletes:      openvswitch-ovn-common < %{ovs_version_to_replace}
 Obsoletes:      ovn-common <= %{ovs_version_to_replace}
+Obsoletes:      rhv-openvswitch-ovn-common
 
 %description    ovn-common
 Wrapper rpm for the base openvswitch-ovn-common package
@@ -151,6 +158,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Mon Jun 7 2021 Ales Musil <amusil@redhat.com> - 0.2021060703
+- Fix obsolete of all rhv-openvswitch packages
+
 * Tue May 25 2021 Ales Musil <amusil@redhat.com> - 0.2021052502
 - Obsolete old rhv-openvswitch package
 
