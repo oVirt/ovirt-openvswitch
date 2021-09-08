@@ -6,7 +6,7 @@
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -45,6 +45,16 @@ Obsoletes:      rhv-openvswitch-devel
 
 %description devel
 Wrapper rpm for the base openvswitch-devel package
+
+%package        ipsec
+Summary:        Wrapper for openvswitch-ipsec rpm
+License:        Public Domain
+Requires:       openvswitch%{ovs_version}-ipsec
+Provides:       openvswitch-ipsec = %{ovs_version}
+Obsoletes:      openvswitch%{version_to_replace}-ipsec
+
+%description ipsec
+Wrapper rpm for the base openvswitch-ipsec package
 
 %package        ovn
 Summary:        Wrapper for ovn rpm
@@ -118,6 +128,7 @@ Wrapper rpm for the base openvswitch-ovn-common package
 %files
 %files -n ovirt-python-openvswitch
 %files devel
+%files ipsec
 %files ovn
 %files ovn-central
 %files ovn-host
@@ -169,6 +180,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Fri Sep 10 2021 Ales Musil <amusil@redhat.com> - 2.15-2
+- Add wrapper for openvswitch-ipsec package
+
 * Wed Aug 25 2021 Ales Musil <amusil@redhat.com> - 2.15-1
 - Update OvS version to 2.15
 - Update OVN version to 2021
