@@ -1,6 +1,7 @@
 oVirt Wrapper package for Open vSwitch and OVN
 ==============================================
 
+image:https://copr.fedorainfracloud.org/coprs/ovirt/ovirt-master-snapshot/package/ovirt-openvswitch/status_image/last_build.png[link=https://copr.fedorainfracloud.org/coprs/ovirt/ovirt-master-snapshot/package/ovirt-openvswitch/]
+
 This package maps the openvswich and ovn
 dependencies to openvswitchX.y and ovnx.y packages.
-
