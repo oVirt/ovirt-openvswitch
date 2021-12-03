@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+      - ovirt-4.4
+  pull_request:
+env:
+  EXPORT_DIR: exported-artifacts
+jobs:
+  rpm:
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:${{ matrix.version.tag }}
+    strategy:
+      matrix:
+        version: [ { tag: stream8, name: centos-8 }, { tag: stream9-development, name: centos-9 } ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: dnf -y install rpm-build createrepo_c
+    - name: Build RPMs
+      run: ./automation/rpm.sh
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts-${{ matrix.version.name }}
+        path: ${{ env.EXPORT_DIR }}
+        retention-days: 7
