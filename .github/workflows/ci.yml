@@ -13,7 +13,7 @@ jobs:
     container: quay.io/centos/centos:${{ matrix.version.tag }}
     strategy:
       matrix:
-        version: [ { tag: stream8, name: centos-8 }, { tag: stream9-development, name: centos-9 } ]
+        version: [ { tag: stream8, name: centos-8 }, { tag: stream9, name: centos-9 } ]
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
