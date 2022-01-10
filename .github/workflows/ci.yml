@@ -10,14 +10,12 @@ env:
 jobs:
   rpm:
     runs-on: ubuntu-latest
-    container: quay.io/centos/centos:${{ matrix.version.tag }}
+    container: quay.io/ovirt/buildcontainer:${{ matrix.version.tag }}
     strategy:
       matrix:
         version: [ { tag: stream8, name: centos-8 }, { tag: stream9, name: centos-9 } ]
     steps:
     - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: dnf -y install rpm-build createrepo_c
     - name: Build RPMs
       run: ./automation/rpm.sh
     - name: Upload artifacts
