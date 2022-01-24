@@ -10,4 +10,3 @@ cp RPMS/noarch/ovirt-openvswitch-*.noarch.rpm $EXPORT_DIR/
 cp RPMS/noarch/ovirt-python-openvswitch-*.noarch.rpm $EXPORT_DIR/
 cp SRPMS/ovirt-openvswitch-*.src.rpm $EXPORT_DIR/
 
-createrepo_c "$EXPORT_DIR"
