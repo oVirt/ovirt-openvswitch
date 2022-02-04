@@ -6,7 +6,7 @@
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -15,8 +15,8 @@ URL:            http://www.openvswitch.org
 BuildArch:      noarch
 
 Requires:       openvswitch%{ovs_version}
-Requires(pretrans): bash
-Requires(pretrans): systemd
+Requires(pre): bash
+Requires(pre): systemd
 Provides:       openvswitch = %{ovs_version}
 Obsoletes:      openvswitch%{version_to_replace}
 Obsoletes:      rhv-openvswitch
@@ -135,7 +135,7 @@ Wrapper rpm for the base openvswitch-ovn-common package
 %files ovn-vtep
 %files ovn-common
 
-%pretrans
+%pre
 preenabled_dir=/var/run/ovirt-openvswitch/enabled
 preactive_dir=/var/run/ovirt-openvswitch/active
 mkdir -p "$preenabled_dir" "$preactive_dir"
@@ -180,6 +180,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Fri Feb 4 2022 Ales Musil <amusil@redhat.com> - 2.15-3
+- Use pre instead of pretrans during installation
+
 * Fri Sep 10 2021 Ales Musil <amusil@redhat.com> - 2.15-2
 - Add wrapper for openvswitch-ipsec package
 
