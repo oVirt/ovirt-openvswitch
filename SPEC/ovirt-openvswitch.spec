@@ -6,7 +6,7 @@
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -164,6 +164,8 @@ for log in ovsdb-server-nb.log ovsdb-server-sb.log ovn-northd.log; do
         mv "$pre_upgrade_log_dir/$log" "$post_upgrade_log_dir/$log"
     fi
 done
+chown -R openvswitch:openvswitch "$post_upgrade_log_dir"
+chown -R openvswitch:openvswitch "$post_upgrade_lib_dir"
 preenabled_dir=/var/run/ovirt-openvswitch/enabled
 preactive_dir=/var/run/ovirt-openvswitch/active
 if [ -d "$preenabled_dir" ]; then
@@ -180,6 +182,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Tue Aug 2 2022 Ales Musil <amusil@redhat.com> - 2.15-4
+- Fix permission of the lib and log directory
+
 * Fri Feb 4 2022 Ales Musil <amusil@redhat.com> - 2.15-3
 - Use pre instead of pretrans during installation
 
