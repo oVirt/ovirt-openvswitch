@@ -16,9 +16,9 @@ jobs:
       matrix:
         distro: [ el8stream, el9stream ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: ovirt/checkout-action@main
     - name: Build RPMs
       run: ./automation/rpm.sh
-    - uses: ovirt/upload-rpms-action@v2
+    - uses: ovirt/upload-rpms-action@main
       with:
         directory: ${{ env.EXPORT_DIR }}
