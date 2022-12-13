@@ -1,12 +1,22 @@
-%define ovs_version 2.15
-%define ovn_version 2021
-%define version_to_replace 2.11
+%if 0%{?rhel} > 8
+%global ovs_version 2.17
+%global ovn_version 22.09
+%global ovs_to_replace 2.15
+%global ovn_to_replace ovn-2021
+%else
+%global ovs_version 2.15
+%global ovn_version 2021
+%global ovs_to_replace 2.11
+%global ovn_to_replace ovn2.11
+%global ovn_dash -
+%endif
+
 
 %global py_openvswitch python3-openvswitch
 
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
@@ -18,7 +28,7 @@ Requires:       openvswitch%{ovs_version}
 Requires(pre): bash
 Requires(pre): systemd
 Provides:       openvswitch = %{ovs_version}
-Obsoletes:      openvswitch%{version_to_replace}
+Obsoletes:      openvswitch%{ovs_to_replace}
 Obsoletes:      rhv-openvswitch
 
 %description
@@ -29,7 +39,7 @@ Summary:        Wrapper for python-openvswitch rpm
 License:        Public Domain
 Requires:       %{py_openvswitch}%{ovs_version}
 Provides:       %{py_openvswitch} = %{ovs_version}
-Obsoletes:      %{py_openvswitch}%{version_to_replace}
+Obsoletes:      %{py_openvswitch}%{ovs_to_replace}
 Obsoletes:      rhv-python-openvswitch
 
 %description -n ovirt-python-openvswitch
@@ -40,7 +50,7 @@ Summary:        Wrapper for openvswitch-devel rpm
 License:        Public Domain
 Requires:       openvswitch%{ovs_version}-devel
 Provides:       openvswitch-devel = %{ovs_version}
-Obsoletes:      openvswitch%{version_to_replace}-devel
+Obsoletes:      openvswitch%{ovs_to_replace}-devel
 Obsoletes:      rhv-openvswitch-devel
 
 %description devel
@@ -51,7 +61,7 @@ Summary:        Wrapper for openvswitch-ipsec rpm
 License:        Public Domain
 Requires:       openvswitch%{ovs_version}-ipsec
 Provides:       openvswitch-ipsec = %{ovs_version}
-Obsoletes:      openvswitch%{version_to_replace}-ipsec
+Obsoletes:      openvswitch%{ovs_to_replace}-ipsec
 
 %description ipsec
 Wrapper rpm for the base openvswitch-ipsec package
@@ -59,10 +69,10 @@ Wrapper rpm for the base openvswitch-ipsec package
 %package        ovn
 Summary:        Wrapper for ovn rpm
 License:        Public Domain
-Requires:       ovn-%{ovn_version}
+Requires:       ovn%{?ovn_dash}%{ovn_version}
 Provides:       openvswitch-ovn = %{ovn_version}
 Provides:       ovn = %{ovn_version}
-Obsoletes:      ovn%{version_to_replace}
+Obsoletes:      %{ovn_to_replace}
 Obsoletes:      rhv-openvswitch-ovn
 
 %description ovn
@@ -71,10 +81,10 @@ Wrapper rpm for the base openvswitch-ovn-central package
 %package        ovn-central
 Summary:        Wrapper for openvswitch-ovn-central rpm
 License:        Public Domain
-Requires:       ovn-%{ovn_version}-central
+Requires:       ovn%{?ovn_dash}%{ovn_version}-central
 Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-central = %{ovn_version}
-Obsoletes:      ovn%{version_to_replace}-central
+Obsoletes:      %{ovn_to_replace}-central
 Obsoletes:      rhv-openvswitch-ovn-central
 
 %description ovn-central
@@ -83,10 +93,10 @@ Wrapper rpm for the base openvswitch-ovn-central package
 %package        ovn-host
 Summary:        Wrapper for openvswitch-ovn-host rpm
 License:        Public Domain
-Requires:       ovn-%{ovn_version}-host
+Requires:       ovn%{?ovn_dash}%{ovn_version}-host
 Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-host = %{ovn_version}
-Obsoletes:      ovn%{version_to_replace}-host
+Obsoletes:      %{ovn_to_replace}-host
 Obsoletes:      rhv-openvswitch-ovn-host
 
 %description    ovn-host
@@ -95,10 +105,10 @@ Wrapper rpm for the base openvswitch-ovn-host package
 %package        ovn-vtep
 Summary:        Wrapper for openvswitch-ovn-vtep rpm
 License:        Public Domain
-Requires:       ovn-%{ovn_version}-vtep
+Requires:       ovn%{?ovn_dash}%{ovn_version}-vtep
 Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-vtep = %{ovn_version}
-Obsoletes:      ovn%{version_to_replace}-vtep
+Obsoletes:      %{ovn_to_replace}-vtep
 Obsoletes:      rhv-openvswitch-ovn-vtep
 
 %description    ovn-vtep
@@ -107,10 +117,10 @@ Wrapper rpm for the base openvswitch-ovn-vtep package
 %package        ovn-common
 Summary:        Wrapper for openvswitch-ovn-common rpm
 License:        Public Domain
-Requires:       ovn-%{ovn_version}
+Requires:       ovn%{?ovn_dash}%{ovn_version}
 Requires:       ovirt-openvswitch-ovn
 Provides:       openvswitch-ovn-common = %{ovn_version}
-Obsoletes:      ovn%{version_to_replace}
+Obsoletes:      %{ovn_to_replace}
 Obsoletes:      rhv-openvswitch-ovn-common
 
 %description    ovn-common
@@ -182,6 +192,10 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Tue Dec 13 2022 Martin Perina <mperina@redhat.com> - 2.17-1
+- Upgrade OvS version to 2.17 on EL9
+- Upgrade OVN version to 2022 on EL9
+
 * Tue Aug 2 2022 Ales Musil <amusil@redhat.com> - 2.15-4
 - Fix permission of the lib and log directory
 
