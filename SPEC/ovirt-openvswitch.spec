@@ -1,4 +1,9 @@
-%if 0%{?rhel} > 8
+%if 0%{?rhel} > 9
+%global ovs_version 3.5
+%global ovn_version 24.09
+%global ovs_to_replace 2.17
+%global ovn_to_replace 22.09
+%elif 0%{?rhel} > 8
 %global ovs_version 2.17
 %global ovn_version 22.09
 %global ovs_to_replace 2.15
@@ -192,6 +197,9 @@ if [ -d "$preenabled_dir" ]; then
 fi
 
 %changelog
+* Tue May 20 2025 Jean-Louis Dupond <jean-louis@dupond.be> - 3.5-1
+- Add support for CentOS Stream 10
+
 * Tue Dec 13 2022 Martin Perina <mperina@redhat.com> - 2.17-1
 - Upgrade OvS version to 2.17 on EL9
 - Upgrade OVN version to 2022 on EL9
