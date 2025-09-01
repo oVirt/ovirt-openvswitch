@@ -5,6 +5,8 @@ on:
       - master
       - ovirt-4.4
   pull_request:
+    branches: [master]
+  workflow_dispatch:
 env:
   EXPORT_DIR: exported-artifacts
 jobs:
