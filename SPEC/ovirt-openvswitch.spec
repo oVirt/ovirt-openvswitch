@@ -19,9 +19,11 @@
 
 %global py_openvswitch python3-openvswitch
 
+%{!?package_rpm_release: %global package_rpm_release 0.master}
+
 Name:           ovirt-openvswitch
 Version:        %{ovs_version}
-Release:        1%{?dist}
+Release:        %{package_rpm_release}%{?release_suffix}%{?dist}
 Summary:        Wrapper RPM for upgrading OVS to newer versions
 
 Group:          System Environment/Daemons
