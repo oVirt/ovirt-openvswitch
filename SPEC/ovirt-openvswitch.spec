@@ -157,10 +157,10 @@ preenabled_dir=/var/run/ovirt-openvswitch/enabled
 preactive_dir=/var/run/ovirt-openvswitch/active
 mkdir -p "$preenabled_dir" "$preactive_dir"
 for service in openvswitch ovn-northd ovirt-provider-ovn ovn-controller; do
-    if [ "$(systemctl is-enabled "$service")" = "enabled" ]; then
+    if [ "$(systemctl is-enabled "$service" 2>/dev/null)" = "enabled" ]; then
         touch "$preenabled_dir/$service"
     fi
-    if [ "$(systemctl is-active "$service")" = "active" ]; then
+    if [ "$(systemctl is-active "$service" 2>/dev/null)" = "active" ]; then
         touch "$preactive_dir/$service"
     fi
 done
